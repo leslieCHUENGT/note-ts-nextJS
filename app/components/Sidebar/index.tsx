@@ -1,8 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { getAllNotes, type IData, type Note } from "@/lib/redis";
+import SidebarNoteList from "./SidebarNoteList";
 
 export default async function Sidebar() {
+  const notes = await getAllNotes();
   return (
     <>
       <section className="col sidebar">
@@ -19,7 +22,9 @@ export default async function Sidebar() {
             <strong>React Notes</strong>
           </section>
         </Link>
-        <nav>{/* SidebarNoteList */}</nav>
+        <nav>
+          <SidebarNoteList notes={notes} />
+        </nav>
       </section>
     </>
   );

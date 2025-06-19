@@ -1,3 +1,7 @@
+/*
+ * @Author: jingtao.lai
+ * @Description: 
+ */
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -19,7 +23,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
