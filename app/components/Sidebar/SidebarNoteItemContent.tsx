@@ -31,10 +31,10 @@ export default function SidebarNoteContent({
   const [isExpanded, setIsExpanded] = useState(false);
   const isActive = id === selectedId;
 
-  // 指定itemRef的类型为HTMLDivElement
   const itemRef = useRef<HTMLDivElement>(null);
   const prevTitleRef = useRef(title);
 
+  // 处理标题变更的动画效果
   useEffect(() => {
     if (title !== prevTitleRef.current) {
       prevTitleRef.current = title;
@@ -44,12 +44,46 @@ export default function SidebarNoteContent({
     }
   }, [title]);
 
+  // 动画结束后的处理
+  const handleAnimationEnd = () => {
+    itemRef.current?.classList.remove("flash");
+  };
+
+  // 打开笔记的处理函数
+  const handleOpenNote = () => {
+    const sidebarToggle = document.getElementById(
+      "sidebar-toggle"
+    ) as HTMLInputElement | null;
+    if (sidebarToggle) {
+      sidebarToggle.checked = true;
+    }
+    router.push(`/note/${id}`);
+  };
+
+  // 切换展开状态的处理函数
+  const handleToggleExpand = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
+  };
+
+  // 计算按钮样式
+  const getButtonStyles = () => {
+    return {
+      backgroundColor: isPending
+        ? "var(--gray-80)"
+        : isActive
+        ? "var(--tertiary-blue)"
+        : "",
+      border: isActive
+        ? "1px solid var(--primary-border)"
+        : "1px solid transparent",
+    };
+  };
+
   return (
     <div
       ref={itemRef}
-      onAnimationEnd={() => {
-        itemRef.current?.classList.remove("flash");
-      }}
+      onAnimationEnd={handleAnimationEnd}
       className={[
         "sidebar-note-list-item",
         isExpanded ? "note-expanded" : "",
@@ -58,35 +92,14 @@ export default function SidebarNoteContent({
       {children}
       <button
         className="sidebar-note-open"
-        style={{
-          backgroundColor: isPending
-            ? "var(--gray-80)"
-            : isActive
-            ? "var(--tertiary-blue)"
-            : "",
-          border: isActive
-            ? "1px solid var(--primary-border)"
-            : "1px solid transparent",
-        }}
-        onClick={() => {
-          // 指定sidebarToggle的类型并添加类型守卫
-          const sidebarToggle = document.getElementById(
-            "sidebar-toggle"
-          ) as HTMLInputElement | null;
-          if (sidebarToggle) {
-            sidebarToggle.checked = true;
-          }
-          router.push(`/note/${id}`);
-        }}
+        style={getButtonStyles()}
+        onClick={handleOpenNote}
       >
         Open note for preview
       </button>
       <button
         className="sidebar-note-toggle-expand"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsExpanded(!isExpanded);
-        }}
+        onClick={handleToggleExpand}
       >
         {isExpanded ? (
           <img
