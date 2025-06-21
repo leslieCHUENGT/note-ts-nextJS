@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SidebarNoteList from "./SidebarNoteList";
-import EditButton from "./EditButton";
+import EditButton from "../EditButton";
 import SidebarNoteListSkeleton from "./SidebarNoteListSkeleton";
 
 export default async function Sidebar() {
@@ -14,8 +14,8 @@ export default async function Sidebar() {
             <Image
               className="logo"
               src="/logo.svg"
-              width={22}
-              height={22}
+              width={16.9}
+              height={15}
               alt=""
               role="presentation"
             />
