@@ -1,7 +1,9 @@
+// components/SidebarSearchField.js
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useT } from "@/app/i18n/client";
 
 function Spinner({ active = true }) {
   return (
@@ -13,14 +15,14 @@ function Spinner({ active = true }) {
   );
 }
 
-export default function SidebarSearchField() {
+export default function SidebarSearchField({ lng }: { lng: string }) {
   const { replace } = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const { t, i18n } = useT("footer");
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(window.location.search);
-    console.log(params, '///');
     if (term) {
       params.set("q", term);
     } else {
@@ -39,7 +41,7 @@ export default function SidebarSearchField() {
       </label>
       <input
         id="sidebar-search-input"
-        placeholder="Search"
+        placeholder={t("search")}
         type="text"
         onChange={(e) => handleSearch(e.target.value)}
       />

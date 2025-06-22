@@ -3,7 +3,7 @@
 import { useEffect, useState, useActionState } from "react";
 import NotePreview from "@/app/components/NotePreview";
 // import { useActionState } from "react-dom";
-import { deleteNote, saveNote } from "@/app/actions";
+import { deleteNote, saveNote } from "@/app/[lng]/actions";
 import SaveButton from "@/app/components/SaveButton";
 import DeleteButton from "@/app/components/DeleteButton";
 
