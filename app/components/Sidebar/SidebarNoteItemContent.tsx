@@ -48,7 +48,6 @@ export default function SidebarNoteContent({
         itemRef.current.classList.add("flash");
       }
     }
-    console.log(title);
   }, [title]);
 
   // 动画结束移除效果

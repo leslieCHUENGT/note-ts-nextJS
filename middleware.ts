@@ -75,8 +75,6 @@ export function middleware(req: NextRequest) {
   // 语言决策流程
   const preferredLng = i18nUtils.getPreferredLanguage(req);
 
-  console.log("preferredLng", preferredLng);
-
   const { pathname, search } = req.nextUrl;
 
   // 路径语言处理

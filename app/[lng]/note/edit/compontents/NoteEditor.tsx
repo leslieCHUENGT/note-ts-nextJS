@@ -32,7 +32,6 @@ export default function NoteEditor({
   useEffect(() => {
     if (saveState.errors) {
       // 处理错误
-      console.log(saveState.errors);
     }
   }, [saveState]);
 
