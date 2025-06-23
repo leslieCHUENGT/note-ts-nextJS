@@ -1,11 +1,10 @@
-import { useTranslation } from "@/app/i18n/index";
+import { getT } from "@/app/i18n";
 
-export default async function Page({ params }: { params: { lng: string } }) {
-  const { lng } = await params;
-  const { t } = await useTranslation(lng);
+export default async function Page() {
+  const { t } = await getT();
   return (
     <div className="note--empty-state">
-      <span className="note-text--empty-state">{t("initText")}</span>
+      <span className="note-text--empty-state">{t("h1")}</span>
     </div>
   );
 }

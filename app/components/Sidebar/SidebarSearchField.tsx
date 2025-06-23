@@ -15,11 +15,11 @@ function Spinner({ active = true }) {
   );
 }
 
-export default function SidebarSearchField({ lng }: { lng: string }) {
+export default function SidebarSearchField() {
   const { replace } = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const { t, i18n } = useT("footer");
+  const { t } = useT("client-page");
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(window.location.search);

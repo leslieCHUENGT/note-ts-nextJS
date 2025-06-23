@@ -1,40 +1,104 @@
-import { NextResponse } from 'next/server'
-import acceptLanguage from 'accept-language'
-import { fallbackLng, languages, cookieName, headerName } from './app/i18n/settings'
+import { NextResponse, NextRequest } from "next/server";
+import acceptLanguage from "accept-language";
+import {
+  defaultLocale,
+  languages,
+  cookieName,
+  headerName,
+} from "./app/i18n/settings";
 
-acceptLanguage.languages(languages)
+// 常量定义
+const PUBLIC_FILE_REGEX = /\.(.*)$/;
+const EXCLUDED_PATHS = ["/api", "/_next", "/assets", "/favicon.ico"];
 
+// 初始化配置
+acceptLanguage.languages(languages);
+
+// 中间件配置
 export const config = {
-  // matcher: '/:lng*'
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)']
-}
+  matcher: [
+    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)",
+  ],
+};
 
-export function middleware(req:any) {
-  if (req.nextUrl.pathname.indexOf('icon') > -1 || req.nextUrl.pathname.indexOf('chrome') > -1) return NextResponse.next()
-  let lng
-  if (req.cookies.has(cookieName)) lng = acceptLanguage.get(req.cookies.get(cookieName).value)
-  if (!lng) lng = acceptLanguage.get(req.headers.get('Accept-Language'))
-  if (!lng) lng = fallbackLng
+// 工具函数模块
+const i18nUtils = {
+  // 判断是否需要跳过处理
+  shouldSkipProcessing: (req: NextRequest): boolean => {
+    const pathname = req.nextUrl.pathname;
+    return (
+      EXCLUDED_PATHS.some((path) => pathname.startsWith(path)) ||
+      PUBLIC_FILE_REGEX.test(pathname) ||
+      pathname.includes("icon") ||
+      pathname.includes("chrome")
+    );
+  },
 
-  const lngInPath = languages.find(loc => req.nextUrl.pathname.startsWith(`/${loc}`))
-  const headers = new Headers(req.headers)
-  headers.set(headerName, lngInPath || lng)
+  // 获取首选语言
+  getPreferredLanguage: (req: NextRequest): string => {
+    const cookieValue = req.cookies.get(cookieName)?.value;
+    return (
+      acceptLanguage.get(cookieValue) ||
+      acceptLanguage.get(req.headers.get("Accept-Language")) ||
+      defaultLocale
+    );
+  },
 
-  // Redirect if lng in path is not supported
-  if (
-    !lngInPath &&
-    !req.nextUrl.pathname.startsWith('/_next')
-  ) {
-    return NextResponse.redirect(new URL(`/${lng}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url))
+  // 处理路径语言信息
+  processPathLanguage: (url: URL, lng: string) => {
+    const pathLng = languages.find((loc) => url.pathname.startsWith(`/${loc}`));
+    const headers = new Headers();
+    headers.set(headerName, pathLng || lng);
+
+    return {
+      headers,
+      hasPathLanguage: !!pathLng,
+      shouldRedirect: !pathLng && !url.pathname.startsWith("/_next"),
+    };
+  },
+
+  // 处理引用页语言
+  processRefererLanguage: (req: NextRequest) => {
+    if (!req.headers.has("referer")) return null;
+
+    const refererUrl = new URL(req.headers.get("referer")!);
+    return languages.find((l) => refererUrl.pathname.startsWith(`/${l}`));
+  },
+};
+
+// 主中间件逻辑
+export function middleware(req: NextRequest) {
+  if (i18nUtils.shouldSkipProcessing(req)) {
+    return NextResponse.next();
   }
 
-  if (req.headers.has('referer')) {
-    const refererUrl = new URL(req.headers.get('referer'))
-    const lngInReferer = languages.find((l) => refererUrl.pathname.startsWith(`/${l}`))
-    const response = NextResponse.next({ headers })
-    if (lngInReferer) response.cookies.set(cookieName, lngInReferer)
-    return response
+  // 语言决策流程
+  const preferredLng = i18nUtils.getPreferredLanguage(req);
+
+  console.log("preferredLng", preferredLng);
+
+  const { pathname, search } = req.nextUrl;
+
+  // 路径语言处理
+  const pathLanguageResult = i18nUtils.processPathLanguage(
+    req.nextUrl,
+    preferredLng
+  );
+  if (pathLanguageResult.shouldRedirect) {
+    return NextResponse.redirect(
+      new URL(`/${preferredLng}${pathname}${search}`, req.url)
+    );
   }
 
-  return NextResponse.next({ headers })
+  // 响应处理
+  const response = NextResponse.next({ headers: pathLanguageResult.headers });
+
+  // 引用页语言处理
+  const refererLng = i18nUtils.processRefererLanguage(req);
+
+  if (refererLng) {
+    response.cookies.set(cookieName, refererLng);
+  }
+
+  return response;
 }

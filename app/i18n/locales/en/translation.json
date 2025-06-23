@@ -1,11 +1,11 @@
 {
-  "h1": "A simple example",
-  "title": "Home",
-  "to-client-page": "To client page",
-  "to-second-page": "To second page",
-  "welcome": "Welcome to Next.js 13/14/15 <1>with the new app directory features</1> and i18next",
+  "h1": "Ein einfaches Beispiel",
+  "title": "Hauptseite",
+  "to-client-page": "Zur client seitigen Seite",
+  "to-second-page": "Zur zweiten Seite",
+  "welcome": "Willkommen ZU Next.js 13/14/15 <1>mit den neuen App-Verzeichnisfunktionen</1> und i18next",
   "blog": {
-    "text": "Check out the corresponding <1>blog post</1> describing this example.",
+    "text": "Schau dir den entsprechenden <1>Blogeintrag</1> dieses Beispiels an.",
     "link": "https://locize.com/blog/next-app-dir-i18n/"
   }
 }

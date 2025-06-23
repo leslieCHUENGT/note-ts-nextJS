@@ -5,10 +5,8 @@ import SidebarNoteList from "./SidebarNoteList";
 import EditButton from "../EditButton";
 import SidebarNoteListSkeleton from "./SidebarNoteListSkeleton";
 import SidebarSearchField from "./SidebarSearchField";
-import { useTranslation } from "@/app/i18n/index";
 
-export default async function Sidebar({ lng }: { lng: string }) {
-  const { t } = await useTranslation(lng);
+export default async function Sidebar() {
   return (
     <>
       <section className="col sidebar">
@@ -26,8 +24,8 @@ export default async function Sidebar({ lng }: { lng: string }) {
           </section>
         </Link>
         <section className="sidebar-menu" role="menubar">
-          <SidebarSearchField lng={lng} />
-          <EditButton noteId={null}>{t("new")}</EditButton>
+          <SidebarSearchField />
+          <EditButton noteId={null}>new</EditButton>
         </section>
         <nav>
           {/* 使用 Suspense，数据加载不会阻塞页面 */}
