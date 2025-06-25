@@ -1,7 +1,3 @@
-/*
- * @Author: jingtao.lai
- * @Description: 
- */
 {
   "compilerOptions": {
     "target": "ES2017",
