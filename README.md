@@ -1,4 +1,4 @@
-- nextJ-记事本demo 
+- nextJs-记事本demo 
   - 技术栈
     - nextJS
     - typescript
