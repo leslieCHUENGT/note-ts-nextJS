@@ -1,1 +1,9 @@
-- nextJ-记事本demo
+- nextJ-记事本demo 
+  - 技术栈
+    - nextJS
+    - typescript
+    - tailwindcss
+    - zustand
+    - ioredis
+    - shadcn-ui
+    - react-i18next
