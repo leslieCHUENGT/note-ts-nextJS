@@ -5,11 +5,14 @@ import SidebarNoteList from "./SidebarNoteList";
 import EditButton from "../EditButton";
 import SidebarNoteListSkeleton from "./SidebarNoteListSkeleton";
 import SidebarSearchField from "./SidebarSearchField";
+import SideUserDataContent from "./SideUserDataContent";
 
 export default async function Sidebar() {
   return (
     <>
       <section className="col sidebar">
+        <SideUserDataContent />
+
         <Link href={"/"} className="link--unstyled">
           <section className="sidebar-header">
             <Image
