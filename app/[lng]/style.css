@@ -241,6 +241,22 @@ hr {
   outline-style: none;
 }
 
+.sidebar-note-toggle-expand {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+}
+
+.note-viewer {
+  flex: 1;
+}
+
 .edit-button--solid {
   background: var(--primary-blue);
   color: var(--white);

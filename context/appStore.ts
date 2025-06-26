@@ -17,7 +17,7 @@ export type AppActions = {
 };
 
 export type AppStore = AppState & AppActions;
-// 初始化状态，默认isLoing都是undefined，这个等我们客户端接口返回之后才去设置他是true或者false
+
 export const initAppStore = (): AppState => {
   return {
     userProfile: {

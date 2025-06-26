@@ -1,7 +1,6 @@
 import { getAllNotes, type IData, type Note } from "@/lib/redis";
 import SidebarNoteItemHeader from "./SidebarNoteItemHeader";
 import SidebarNoteListFilter from "./SidebarNoteListFilter";
-import { sleep } from "@/lib/utils";
 
 export default async function SidebarNoteList() {
   const notes = await getAllNotes();

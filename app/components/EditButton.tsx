@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { type ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function EditButton({
   noteId,
@@ -9,17 +10,17 @@ export default function EditButton({
   children: ReactNode;
 }) {
   const isDraft = noteId == null;
+
   return (
     <Link href={`/note/edit/${noteId || ""}`} className="link--unstyled">
-      <button
-        className={[
-          "edit-button",
-          isDraft ? "edit-button--solid" : "edit-button--outline",
-        ].join(" ")}
+      <Button
+        variant={isDraft ? "link" : "outline"}
+        size="lg"
+        className="w-full"
         role="menuitem"
       >
         {children}
-      </button>
+      </Button>
     </Link>
   );
 }

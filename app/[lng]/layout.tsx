@@ -1,3 +1,4 @@
+import "./globals.css";
 import "./style.css";
 import { ReactNode } from "react";
 import Sidebar from "@/app/components/Sidebar/index";
