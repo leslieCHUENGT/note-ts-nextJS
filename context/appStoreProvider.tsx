@@ -17,6 +17,7 @@ export interface AppStoreProviderProps {
 export const AppStoreProvider = ({ children }: AppStoreProviderProps) => {
   // 只会初始化一次
   const storeRef = useRef<AppStoreApi | null>(null);
+  // 可以在这个里进行获取用户的数据
   if (!storeRef.current) {
     storeRef.current = createAppStore(initAppStore());
   }
